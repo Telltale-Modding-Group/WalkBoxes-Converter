@@ -1,0 +1,56 @@
+WalkBoxes       struc ; (sizeof=0xC8, align=0x8, copyof_5141)
+mName           String ?
+mTris           DCArray<WalkBoxes::Tri> ?
+mVerts          DCArray<WalkBoxes::Vert> ?
+mNormals        DCArray<Vector3> ?
+mQuads          DCArray<WalkBoxes::Quad> ?
+
+WalkBoxes::Tri  struc ; (sizeof=0x8C, align=0x4, copyof_5133)
+mFootstepMaterial SoundFootsteps::EnumMaterial ?
+mFlags          Flags ?
+mNormal         dd ?
+mQuadBuddy      dd ?
+mMaxRadius      dd ?
+mVerts          SArray<int,3> ?
+mEdgeInfo       SArray<WalkBoxes::Edge,3> ?
+mVertOffsets    SArray<int,3> ?
+mVertScales     SArray<float,3> ?
+
+WalkBoxes::Quad struc ; (sizeof=0x10, align=0x4, copyof_5139)
+mVerts          SArray<int,4> ?
+
+WalkBoxes::Vert struc ; (sizeof=0x10, align=0x4, copyof_5135)
+mFlags          Flags ?
+mPos            Vector3 ?
+
+WalkBoxes::Edge struc ; (sizeof=0x1C, align=0x4, copyof_5130)
+mFlags          Flags ?
+mV1             dd ?
+mV2             dd ?
+mEdgeDest       dd ?
+mEdgeDestEdge   dd ?
+mEdgeDir        dd ?
+mMaxRadius      dd ?
+
+Flags           struc ; (sizeof=0x4, align=0x4, copyof_2704)
+mFlags          dd ?
+
+; enum SoundFootsteps::Material, copyof_705
+Default          = 1
+Carpet           = 2
+Concrete         = 3
+Concrete_Wet     = 4
+Dirt             = 5
+Grass            = 6
+Grass_Tall       = 7
+Gravel           = 8
+Leaves           = 9
+Linoleum         = 0Ah
+Metal_Thick      = 0Bh
+Metal_Thin       = 0Ch
+Mud              = 0Dh
+Puddle           = 0Eh
+Sand             = 0Fh
+Snow             = 10h
+Tile_Hard        = 11h
+Wood             = 12h

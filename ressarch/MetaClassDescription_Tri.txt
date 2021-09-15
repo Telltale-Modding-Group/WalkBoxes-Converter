@@ -1,0 +1,36 @@
+MetaClassDescription *__cdecl GetMetaClassDescription<WalkBoxes::Tri>()
+{
+  int v0; // eax@1
+  signed int i; // ebx@2
+  MetaClassDescription *result; // rax@8
+
+  v0 = `MetaClassDescription_Typed<WalkBoxes::Tri>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mFlags;
+  if ( _bittest(&v0, 0x1Du) )
+  {
+    result = &`MetaClassDescription_Typed<WalkBoxes::Tri>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory;
+  }
+  else
+  {
+    for ( i = 0;
+          _InterlockedExchange(
+            &`MetaClassDescription_Typed<WalkBoxes::Tri>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mLock,
+            1) == 1;
+          ++i )
+    {
+      if ( i > 1000 )
+        Thread_Sleep(1);
+    }
+    if ( !(`MetaClassDescription_Typed<WalkBoxes::Tri>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mFlags & 0x20000000) )
+    {
+      MetaClassDescription::Initialize(
+        &`MetaClassDescription_Typed<WalkBoxes::Tri>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory,
+        &WalkBoxes::Tri `RTTI Type Descriptor');
+      `MetaClassDescription_Typed<WalkBoxes::Tri>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mClassSize = 140;
+      WalkBoxes::Tri::InternalGetMetaClassDescription(&`MetaClassDescription_Typed<WalkBoxes::Tri>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory);
+      MetaClassDescription::Insert(&`MetaClassDescription_Typed<WalkBoxes::Tri>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory);
+    }
+    `MetaClassDescription_Typed<WalkBoxes::Tri>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mLock.mValue = 0;
+    result = &`MetaClassDescription_Typed<WalkBoxes::Tri>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory;
+  }
+  return result;
+}

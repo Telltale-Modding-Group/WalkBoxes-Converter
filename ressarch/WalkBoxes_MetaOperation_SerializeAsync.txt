@@ -1,0 +1,63 @@
+signed __int64 __fastcall WalkBoxes::MetaOperation_SerializeAsync(void *pObj, MetaClassDescription *pObjDescription, MetaMemberDescription *pContextDescription, void *pUserData)
+{
+  WalkBoxes *v4; // rdi@1
+  int v5; // ebp@1
+  __int64 v6; // rsi@2
+  WalkBoxes::Vert *v7; // rcx@3
+  WalkBoxes::Quad *v8; // rbx@3
+  signed __int64 v9; // rax@3
+  int v10; // xmm1_4@3
+  int v11; // xmm0_4@3
+  Vector3 *v12; // r9@3
+  Vector3 *v13; // r8@3
+  WalkBoxes::Vert *v14; // rcx@3
+  signed __int64 v15; // rax@3
+  int v16; // xmm1_4@3
+  int v17; // xmm0_4@3
+  Vector3 *v18; // r9@3
+  Vector3 *v19; // r8@3
+  float v21; // [sp+30h] [bp-28h]@3
+  int v22; // [sp+34h] [bp-24h]@3
+  int v23; // [sp+38h] [bp-20h]@3
+  float v24; // [sp+40h] [bp-18h]@3
+  int v25; // [sp+44h] [bp-14h]@3
+  int v26; // [sp+48h] [bp-10h]@3
+
+  v4 = pObj;
+  Meta::MetaOperation_SerializeAsync(pObj, pObjDescription, pContextDescription, pUserData);
+  v5 = 0;
+  if ( v4->mQuads.mSize > 0 )
+  {
+    v6 = 0i64;
+    do
+    {
+      v7 = v4->mVerts.mpStorage;
+      v8 = v4->mQuads.mpStorage;
+      v9 = v8[v6].mVerts.mData[0];
+      v10 = LODWORD(v7[v8[v6].mVerts.mData[0]].mPos.y);
+      v21 = v7[v8[v6].mVerts.mData[0]].mPos.x;
+      v11 = LODWORD(v7[(4 * v9) / 0x10].mPos.z);
+      v12 = &v7[v8[v6].mVerts.mData[2]].mPos;
+      v22 = v10;
+      v13 = &v7[v8[v6].mVerts.mData[1]].mPos;
+      v23 = v11;
+      WalkBoxes::AddTri(v4, &v21, v13, v12, 0);
+      v14 = v4->mVerts.mpStorage;
+      v15 = v8[v6].mVerts.mData[3];
+      v16 = LODWORD(v14[v8[v6].mVerts.mData[3]].mPos.y);
+      v24 = v14[v8[v6].mVerts.mData[3]].mPos.x;
+      v17 = LODWORD(v14[(4 * v15) / 0x10].mPos.z);
+      v18 = &v14[v8[v6].mVerts.mData[1]].mPos;
+      v25 = v16;
+      v19 = &v14[v8[v6].mVerts.mData[2]].mPos;
+      v26 = v17;
+      WalkBoxes::AddTri(v4, &v24, v19, v18, 0);
+      ++v5;
+      ++v6;
+    }
+    while ( v5 < v4->mQuads.mSize );
+  }
+  v4->mQuads.mSize = 0;
+  WalkBoxes::UpdateAll(v4);
+  return 1i64;
+}

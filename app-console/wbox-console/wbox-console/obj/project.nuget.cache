@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "bOEvCzYnfyZDBOmlVbUiF9fxWZPHp02lu0VolWxk0zdeHLfqo5PQo1AWhQDGesuEnDoLubVQEAY17LXmmnGFBw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\david\\Desktop\\telltale-wbox\\app-console\\wbox-console\\wbox-console\\wbox-console.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\david\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}

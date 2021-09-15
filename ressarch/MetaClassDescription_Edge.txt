@@ -1,0 +1,66 @@
+MetaClassDescription *__cdecl GetMetaClassDescription<WalkBoxes::Edge>()
+{
+  int v0; // eax@1
+  signed int i; // ebx@2
+  MetaClassDescription *result; // rax@8
+
+  v0 = `MetaClassDescription_Typed<WalkBoxes::Edge>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mFlags;
+  if ( _bittest(&v0, 0x1Du) )
+  {
+    result = &`MetaClassDescription_Typed<WalkBoxes::Edge>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory;
+  }
+  else
+  {
+    for ( i = 0;
+          _InterlockedExchange(
+            &`MetaClassDescription_Typed<WalkBoxes::Edge>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mLock,
+            1) == 1;
+          ++i )
+    {
+      if ( i > 1000 )
+        Thread_Sleep(1);
+    }
+    if ( !(`MetaClassDescription_Typed<WalkBoxes::Edge>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mFlags & 0x20000000) )
+    {
+      MetaClassDescription::Initialize(
+        &`MetaClassDescription_Typed<WalkBoxes::Edge>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory,
+        &WalkBoxes::Edge `RTTI Type Descriptor');
+      `MetaClassDescription_Typed<WalkBoxes::Edge>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mClassSize = 28;
+      `MetaClassDescription_Typed<WalkBoxes::Edge>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mpVTable = `MetaClassDescription_Typed<WalkBoxes::Edge>::GetVTable'::`2'::sVTable;
+      qword_140FBB0D0 = MetaHelpers::GetMetaClassDescription<long>();
+      `WalkBoxes::Edge::InternalGetMetaClassDescription'::`4'::metaMemberDescriptionMemory = "mV1";
+      `MetaClassDescription_Typed<WalkBoxes::Edge>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mpFirstMember = &`WalkBoxes::Edge::InternalGetMetaClassDescription'::`4'::metaMemberDescriptionMemory;
+      qword_140FBB0A8 = 4i64;
+      qword_140FBB0B8 = &`MetaClassDescription_Typed<WalkBoxes::Edge>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory;
+      qword_140FBB108 = MetaHelpers::GetMetaClassDescription<long>();
+      `WalkBoxes::Edge::InternalGetMetaClassDescription'::`5'::metaMemberDescriptionMemory = "mV2";
+      qword_140FBB0C0 = &`WalkBoxes::Edge::InternalGetMetaClassDescription'::`5'::metaMemberDescriptionMemory;
+      qword_140FBB0E0 = 8i64;
+      qword_140FBB0F0 = &`MetaClassDescription_Typed<WalkBoxes::Edge>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory;
+      qword_140FBB140 = MetaHelpers::GetMetaClassDescription<long>();
+      `WalkBoxes::Edge::InternalGetMetaClassDescription'::`6'::metaMemberDescriptionMemory = "mEdgeDest";
+      qword_140FBB0F8 = &`WalkBoxes::Edge::InternalGetMetaClassDescription'::`6'::metaMemberDescriptionMemory;
+      qword_140FBB118 = 12i64;
+      qword_140FBB128 = &`MetaClassDescription_Typed<WalkBoxes::Edge>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory;
+      qword_140FBB178 = MetaHelpers::GetMetaClassDescription<long>();
+      `WalkBoxes::Edge::InternalGetMetaClassDescription'::`7'::metaMemberDescriptionMemory = "mEdgeDestEdge";
+      qword_140FBB130 = &`WalkBoxes::Edge::InternalGetMetaClassDescription'::`7'::metaMemberDescriptionMemory;
+      qword_140FBB150 = 16i64;
+      qword_140FBB160 = &`MetaClassDescription_Typed<WalkBoxes::Edge>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory;
+      qword_140FBB1B0 = MetaHelpers::GetMetaClassDescription<long>();
+      `WalkBoxes::Edge::InternalGetMetaClassDescription'::`8'::metaMemberDescriptionMemory = "mEdgeDir";
+      qword_140FBB168 = &`WalkBoxes::Edge::InternalGetMetaClassDescription'::`8'::metaMemberDescriptionMemory;
+      qword_140FBB188 = 20i64;
+      qword_140FBB198 = &`MetaClassDescription_Typed<WalkBoxes::Edge>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory;
+      qword_140FBB1E8 = MetaClassDescription_Typed<float>::GetMetaClassDescription();
+      qword_140FBB1C0 = 24i64;
+      `WalkBoxes::Edge::InternalGetMetaClassDescription'::`9'::metaMemberDescriptionMemory = "mMaxRadius";
+      qword_140FBB1A0 = &`WalkBoxes::Edge::InternalGetMetaClassDescription'::`9'::metaMemberDescriptionMemory;
+      qword_140FBB1D0 = &`MetaClassDescription_Typed<WalkBoxes::Edge>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory;
+      MetaClassDescription::Insert(&`MetaClassDescription_Typed<WalkBoxes::Edge>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory);
+    }
+    `MetaClassDescription_Typed<WalkBoxes::Edge>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mLock.mValue = 0;
+    result = &`MetaClassDescription_Typed<WalkBoxes::Edge>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory;
+  }
+  return result;
+}

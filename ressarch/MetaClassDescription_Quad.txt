@@ -1,0 +1,41 @@
+MetaClassDescription *__cdecl GetMetaClassDescription<WalkBoxes::Quad>()
+{
+  int v0; // eax@1
+  signed int i; // ebx@2
+  MetaClassDescription *result; // rax@8
+
+  v0 = `MetaClassDescription_Typed<WalkBoxes::Quad>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mFlags;
+  if ( _bittest(&v0, 0x1Du) )
+  {
+    result = &`MetaClassDescription_Typed<WalkBoxes::Quad>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory;
+  }
+  else
+  {
+    for ( i = 0;
+          _InterlockedExchange(
+            &`MetaClassDescription_Typed<WalkBoxes::Quad>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mLock,
+            1) == 1;
+          ++i )
+    {
+      if ( i > 1000 )
+        Thread_Sleep(1);
+    }
+    if ( !(`MetaClassDescription_Typed<WalkBoxes::Quad>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mFlags & 0x20000000) )
+    {
+      MetaClassDescription::Initialize(
+        &`MetaClassDescription_Typed<WalkBoxes::Quad>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory,
+        &WalkBoxes::Quad `RTTI Type Descriptor');
+      `MetaClassDescription_Typed<WalkBoxes::Quad>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mClassSize = 16;
+      `MetaClassDescription_Typed<WalkBoxes::Quad>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mpVTable = `MetaClassDescription_Typed<WalkBoxes::Quad>::GetVTable'::`2'::sVTable;
+      qword_140FBB418 = MetaHelpers::GetMetaClassDescription<SArray<int,4>>(1);
+      qword_140FBB3F0 = 0i64;
+      `WalkBoxes::Quad::InternalGetMetaClassDescription'::`4'::metaMemberDescriptionMemory = "mVerts";
+      `MetaClassDescription_Typed<WalkBoxes::Quad>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mpFirstMember = &`WalkBoxes::Quad::InternalGetMetaClassDescription'::`4'::metaMemberDescriptionMemory;
+      qword_140FBB400 = &`MetaClassDescription_Typed<WalkBoxes::Quad>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory;
+      MetaClassDescription::Insert(&`MetaClassDescription_Typed<WalkBoxes::Quad>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory);
+    }
+    `MetaClassDescription_Typed<WalkBoxes::Quad>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mLock.mValue = 0;
+    result = &`MetaClassDescription_Typed<WalkBoxes::Quad>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory;
+  }
+  return result;
+}

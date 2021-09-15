@@ -1,0 +1,79 @@
+MetaClassDescription *__cdecl GetMetaClassDescription<WalkBoxes>()
+{
+  int v0; // eax@1
+  signed int i; // ebx@2
+  MetaClassDescription *v2; // rax@7
+  MetaClassDescription *result; // rax@8
+
+  v0 = `MetaClassDescription_Typed<WalkBoxes>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mFlags;
+  
+  if ( _bittest(&v0, 0x1Du) )
+  {
+    result = &`MetaClassDescription_Typed<WalkBoxes>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory;
+  }
+  else
+  {
+    for ( i = 0; _InterlockedExchange(&`MetaClassDescription_Typed<WalkBoxes>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mLock, 1) == 1; ++i )
+    {
+      if ( i > 1000 )
+        Thread_Sleep(1);
+    }
+	
+    if ( !(`MetaClassDescription_Typed<WalkBoxes>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mFlags & 0x20000000) )
+    {
+      MetaClassDescription::Initialize(&`MetaClassDescription_Typed<WalkBoxes>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory, &WalkBoxes `RTTI Type Descriptor');
+      `MetaClassDescription_Typed<WalkBoxes>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mClassSize = 200;
+      `MetaClassDescription_Typed<WalkBoxes>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mpVTable = `MetaClassDescription_Typed<WalkBoxes>::GetVTable'::`2'::sVTable;
+      `WalkBoxes::InternalGetMetaClassDescription'::`4'::operation_obj.id = 74;
+      `MetaClassDescription_Typed<WalkBoxes>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mpExt = "wbox";
+      `WalkBoxes::InternalGetMetaClassDescription'::`4'::operation_obj.mpOpFn = WalkBoxes::MetaOperation_SerializeAsync;
+	  
+	  
+	  
+      MetaClassDescription::InstallSpecializedMetaOperation(&`MetaClassDescription_Typed<WalkBoxes>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory, &`WalkBoxes::InternalGetMetaClassDescription'::`4'::operation_obj);
+      `WalkBoxes::InternalGetMetaClassDescription'::`5'::operation_obj.id = 22;
+      `WalkBoxes::InternalGetMetaClassDescription'::`5'::operation_obj.mpOpFn = WalkBoxes::MetaOperation_SetObjectName;
+	  
+      MetaClassDescription::InstallSpecializedMetaOperation(&`MetaClassDescription_Typed<WalkBoxes>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory, &`WalkBoxes::InternalGetMetaClassDescription'::`5'::operation_obj);
+	  
+      qword_140FBB480 = MetaHelpers::GetMetaClassDescription<String>();
+      `WalkBoxes::InternalGetMetaClassDescription'::`6'::metaMemberDescriptionMemory = "mName";
+      `MetaClassDescription_Typed<WalkBoxes>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mpFirstMember = &`WalkBoxes::InternalGetMetaClassDescription'::`6'::metaMemberDescriptionMemory;
+      qword_140FBB458 = 0i64;
+	  
+      qword_140FBB468 = &`MetaClassDescription_Typed<WalkBoxes>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory;
+      qword_140FBB4B8 = MetaClassDescription_Typed<DCArray<WalkBoxes::Tri>>::GetMetaClassDescription();
+      `WalkBoxes::InternalGetMetaClassDescription'::`7'::metaMemberDescriptionMemory = "mTris";
+      qword_140FBB470 = &`WalkBoxes::InternalGetMetaClassDescription'::`7'::metaMemberDescriptionMemory;
+      qword_140FBB490 = 40i64;
+	  
+      qword_140FBB4A0 = &`MetaClassDescription_Typed<WalkBoxes>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory;
+      qword_140FBB4F0 = MetaClassDescription_Typed<DCArray<WalkBoxes::Vert>>::GetMetaClassDescription();
+      `WalkBoxes::InternalGetMetaClassDescription'::`8'::metaMemberDescriptionMemory = "mVerts";
+      qword_140FBB4A8 = &`WalkBoxes::InternalGetMetaClassDescription'::`8'::metaMemberDescriptionMemory;
+      qword_140FBB4C8 = 80i64;
+      qword_140FBB4D8 = &`MetaClassDescription_Typed<WalkBoxes>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory;
+      qword_140FBB528 = MetaClassDescription_Typed<DCArray<Vector3>>::GetMetaClassDescription();
+      `WalkBoxes::InternalGetMetaClassDescription'::`9'::metaMemberDescriptionMemory = "mNormals";
+      qword_140FBB4E0 = &`WalkBoxes::InternalGetMetaClassDescription'::`9'::metaMemberDescriptionMemory;
+      qword_140FBB500 = 120i64;
+      qword_140FBB510 = &`MetaClassDescription_Typed<WalkBoxes>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory;
+      v2 = MetaClassDescription_Typed<DCArray<WalkBoxes::Quad>>::GetMetaClassDescription();
+      dword_140FBB540 |= 0x20u;
+      qword_140FBB560 = v2;
+      `WalkBoxes::InternalGetMetaClassDescription'::`10'::metaMemberDescriptionMemory = "mQuads";
+      qword_140FBB518 = &`WalkBoxes::InternalGetMetaClassDescription'::`10'::metaMemberDescriptionMemory;
+      qword_140FBB538 = 160i64;
+      qword_140FBB548 = &`MetaClassDescription_Typed<WalkBoxes>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory;
+      MetaClassDescription::Insert(&`MetaClassDescription_Typed<WalkBoxes>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory);
+	  
+    }
+	
+    `MetaClassDescription_Typed<WalkBoxes>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mLock.mValue = 0;
+	
+    result = &`MetaClassDescription_Typed<WalkBoxes>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory;
+	
+  }
+  
+  return result;
+}
