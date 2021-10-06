@@ -11,7 +11,7 @@ namespace wbox_console
     class Program
     {
         private static string wboxExt = ".wbox";
-        private static string directory = "C:/Users/david/Desktop/telltale-wbox/de-wboxes";
+        private static string directory = "C:/Users/David Matos/Desktop/Desktop2022/telltale-wbox/de-wboxes";
 
         private static void Main(string[] args)
         {

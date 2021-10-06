@@ -11,11 +11,7 @@ MetaClassDescription *__cdecl GetMetaClassDescription<WalkBoxes::Vert>()
   }
   else
   {
-    for ( i = 0;
-          _InterlockedExchange(
-            &`MetaClassDescription_Typed<WalkBoxes::Vert>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mLock,
-            1) == 1;
-          ++i )
+    for (i = 0; _InterlockedExchange(&`MetaClassDescription_Typed<WalkBoxes::Vert>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mLock, 1) == 1; ++i )
     {
       if ( i > 1000 )
         Thread_Sleep(1);

@@ -1,0 +1,120 @@
+WBOX FILE FORMAT
+
+WBOX HEADER
+string MagicHeader //4 bytes
+uint mData //4 bytes
+uint Unknown1 //4 bytes
+uint Unknown2 //4 bytes
+uint Unknown3 //4 bytes
+
+int classNamesInHeader = 9;
+for classNamesInHeader
+{
+	ulong crcValue //8 bytes
+}
+
+WBOX DATA
+uint Unknown4 //4 bytes
+uint mNameLength //4 bytes
+string mName //mNameLength describes the length of the string
+
+uint mTris_Capacity //4 bytes (the size in bytes, of the mTris array)
+uint mTris_Size //4 bytes (the amount of elements in the mTris array)
+
+for mTris_Size //an array of a custom Tri object
+{
+	int mFootstepMaterial //4 bytes (EnumMaterial)
+        uint mFlags //4 bytes
+        ulong mNormal //8 bytes (not certain)
+        ulong mQuadBuddy //8 bytes (not certain)
+        float mMaxRadius //4 bytes
+
+        mVerts //integer array that always has 3 elements
+        {
+        	int vert1 //4 bytes
+        	int vert2 //4 bytes
+        	int vert3 //4 bytes
+        }
+
+        mEdgeInfo //edge object array that always has 3 elements
+        {
+		//ELEMENT 1
+                uint mFlags //4 bytes
+                int mV1 = //4 bytes
+                int mV2 = //4 bytes
+                int mEdgeDest = //4 bytes
+                int mEdgeDestEdge = //4 bytes
+                int mEdgeDir = //4 bytes
+                float mMaxRadius //4 bytes
+
+		//ELEMENT 2
+                uint mFlags //4 bytes
+                int mV1 = //4 bytes
+                int mV2 = //4 bytes
+                int mEdgeDest = //4 bytes
+                int mEdgeDestEdge = //4 bytes
+                int mEdgeDir = //4 bytes
+                float mMaxRadius //4 bytes
+
+		//ELEMENT 3
+                uint mFlags //4 bytes
+                int mV1 = //4 bytes
+                int mV2 = //4 bytes
+                int mEdgeDest = //4 bytes
+                int mEdgeDestEdge = //4 bytes
+                int mEdgeDir = //4 bytes
+                float mMaxRadius //4 bytes
+        }
+
+        mVertOffsets //integer array that always has 3 elements
+        {
+        	int offset1 //4 bytes
+		int offset2 //4 bytes
+		int offset3 //4 bytes
+        }
+
+        mVertScales //float array that always has 3 elements
+        {
+        	float scale1 //4 bytes
+		float scale2 //4 bytes
+		float scale3 //4 bytes
+        }
+}
+
+uint mVerts_Capacity //4 bytes (the size in bytes, of the mTris array)
+uint mVerts_Size //4 bytes (the amount of elements in the mTris array)
+
+for mVerts_Size //an array of a custom Vert object
+{
+	uint mFlags //4 bytes
+
+	//this is a vector3 object
+	float mPos x //4 bytes
+        float mPos y //4 bytes
+        float mPos z //4 bytes
+}
+
+uint mNormals_Capacity //4 bytes
+uint mNormals_Size //4 bytes
+
+for mNormals_Size //an array of Vector3 objects
+{
+	//this is a vector3 object
+	float mNormal x //4 bytes
+        float mNormal y //4 bytes
+        float mNormal z //4 bytes
+}
+
+uint mQuads_Capacity //4 bytes
+uint mQuads_Size //4 bytes
+
+for mQuads_Size //an array of a custom Quad object
+{
+	//this is a Quad object
+	int mVert1 //4 bytes
+        int mVert2 //4 bytes
+        int mVert3 //4 bytes
+	int mVert4 //4 bytes
+}
+
+//END OF FILE

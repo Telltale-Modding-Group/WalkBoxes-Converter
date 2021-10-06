@@ -11,20 +11,14 @@ MetaClassDescription *__cdecl GetMetaClassDescription<WalkBoxes::Edge>()
   }
   else
   {
-    for ( i = 0;
-          _InterlockedExchange(
-            &`MetaClassDescription_Typed<WalkBoxes::Edge>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mLock,
-            1) == 1;
-          ++i )
+    for (i = 0; _InterlockedExchange(&`MetaClassDescription_Typed<WalkBoxes::Edge>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mLock, 1) == 1; ++i)
     {
       if ( i > 1000 )
         Thread_Sleep(1);
     }
     if ( !(`MetaClassDescription_Typed<WalkBoxes::Edge>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mFlags & 0x20000000) )
     {
-      MetaClassDescription::Initialize(
-        &`MetaClassDescription_Typed<WalkBoxes::Edge>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory,
-        &WalkBoxes::Edge `RTTI Type Descriptor');
+      MetaClassDescription::Initialize(&`MetaClassDescription_Typed<WalkBoxes::Edge>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory, &WalkBoxes::Edge `RTTI Type Descriptor');
       `MetaClassDescription_Typed<WalkBoxes::Edge>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mClassSize = 28;
       `MetaClassDescription_Typed<WalkBoxes::Edge>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mpVTable = `MetaClassDescription_Typed<WalkBoxes::Edge>::GetVTable'::`2'::sVTable;
       qword_140FBB0D0 = MetaHelpers::GetMetaClassDescription<long>();

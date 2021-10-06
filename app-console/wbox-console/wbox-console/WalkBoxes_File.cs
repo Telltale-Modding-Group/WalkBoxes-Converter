@@ -13,12 +13,6 @@ namespace wbox_console
     {
         public WalkBoxes WalkBoxes { get; set; }
 
-        public struct Header_ClassName
-        {
-            public ulong crcValue;
-            public string hexValue;
-        }
-
         public static WalkBoxes Read_WalkBox_FromTelltale(string filePath)
         {
             byte[] fileBytes = File.ReadAllBytes(filePath);
@@ -26,161 +20,187 @@ namespace wbox_console
 
             uint bytePointerPosition = 0;
 
-            //----------------------- WBOX HEADER -----------------------
-            string MagicHeader = ByteFunctions.ReadFixedString(fileBytes, 4, ref bytePointerPosition);
-            Console.WriteLine("MagicHeader: '{0}'", MagicHeader);
+            WalkBoxes walkBoxes = new WalkBoxes();
 
-            uint mData = ByteFunctions.ReadUnsignedInt(fileBytes, ref bytePointerPosition);
-            Console.WriteLine("mData: '{0}'", mData);
+            //||||||||||||||||||||||||||||||||||||||||| META HEADER |||||||||||||||||||||||||||||||||||||||||
+            //||||||||||||||||||||||||||||||||||||||||| META HEADER |||||||||||||||||||||||||||||||||||||||||
+            //||||||||||||||||||||||||||||||||||||||||| META HEADER |||||||||||||||||||||||||||||||||||||||||
+            ConsoleFunctions.SetConsoleColor(ConsoleColor.Black, ConsoleColor.Cyan);
+            Console.WriteLine("||||||||||| Meta Header |||||||||||");
+            ConsoleFunctions.SetConsoleColor(ConsoleColor.Black, ConsoleColor.White);
 
-            //CALCULATION HERE (NOT IN THE FILE)
-            uint HeaderLength = (uint)fileBytes.Length - mData;
-            Console.WriteLine("Header Length: '{0}'", HeaderLength);
+            //--------------------------Meta Stream Keyword-------------------------- [4 bytes]
+            walkBoxes.mMetaStreamVersion = ByteFunctions.ReadFixedString(fileBytes, 4, ref bytePointerPosition);
+            Console.WriteLine("WBOX Meta Stream Version: '{0}'", walkBoxes.mMetaStreamVersion);
 
-            uint Unknown1 = ByteFunctions.ReadUnsignedInt(fileBytes, ref bytePointerPosition); //check what this value is in IDA
-            uint Unknown2 = ByteFunctions.ReadUnsignedInt(fileBytes, ref bytePointerPosition); //check what this value is in IDA
-            uint Unknown3 = ByteFunctions.ReadUnsignedInt(fileBytes, ref bytePointerPosition); //check what this value is in IDA
+            //--------------------------Default Section Chunk Size--------------------------
+            walkBoxes.mDefaultSectionChunkSize = ByteFunctions.ReadUnsignedInt(fileBytes, ref bytePointerPosition);
+            Console.WriteLine("WBOX Default Section Chunk Size: '{0}'", walkBoxes.mDefaultSectionChunkSize);
 
-            int classNamesInHeader = 9;
+            //-------------------------Debug Section Chunk Size-------------------------- [4 bytes]
+            walkBoxes.mDebugSectionChunkSize = ByteFunctions.ReadUnsignedInt(fileBytes, ref bytePointerPosition);
+            Console.WriteLine("WBOX Debug Section Chunk Size = {0}", walkBoxes.mDebugSectionChunkSize);
 
-            Header_ClassName[] header_ClassNames = new Header_ClassName[classNamesInHeader];
+            //--------------------------Async Section Chunk Size-------------------------- [4 bytes]
+            walkBoxes.mAsyncSectionChunkSize = ByteFunctions.ReadUnsignedInt(fileBytes, ref bytePointerPosition);
+            Console.WriteLine("WBOX Async Section Chunk Size = {0}", walkBoxes.mAsyncSectionChunkSize);
 
-            for (int i = 0; i < header_ClassNames.Length; i++)
+            //--------------------------CALCULATING HEADER LENGTH--------------------------
+            uint calculated_HeaderLength = (uint)fileBytes.Length - walkBoxes.mDefaultSectionChunkSize;
+            ConsoleFunctions.SetConsoleColor(ConsoleColor.Black, ConsoleColor.Cyan);
+            Console.WriteLine("WBOX Calculated Header Length: '{0}'", calculated_HeaderLength);
+            ConsoleFunctions.SetConsoleColor(ConsoleColor.Black, ConsoleColor.White);
+
+            //--------------------------mClassNamesLength-------------------------- [4 bytes]
+            walkBoxes.mClassNamesLength = ByteFunctions.ReadUnsignedInt(fileBytes, ref bytePointerPosition);
+            Console.WriteLine("WBOX mClassNamesLength = {0}", walkBoxes.mClassNamesLength);
+
+            //--------------------------mClassNames--------------------------
+            walkBoxes.mClassNames = new ClassName[walkBoxes.mClassNamesLength];
+
+            for (int i = 0; i < walkBoxes.mClassNames.Length; i++)
             {
-                Header_ClassName className = new Header_ClassName();
+                walkBoxes.mClassNames[i] = ConvertStructs.Get_ClassName(fileBytes, ref bytePointerPosition);
 
-                className.crcValue = ByteFunctions.ReadUnsignedLong(fileBytes, ref bytePointerPosition); //this is a 8 byte ulong crc of a classname
-                className.hexValue = className.crcValue.ToString("X");
-
-                header_ClassNames[i] = className;
+                Console.WriteLine("WBOX mClassName {0} = {1}", i, walkBoxes.mClassNames[i]);
             }
 
-            //----------------------- WBOX DATA -----------------------
-            uint Unknown4 = ByteFunctions.ReadUnsignedInt(fileBytes, ref bytePointerPosition); //check what this value is in IDA
-            Console.WriteLine("Unknown4: '{0}'", Unknown1);
+            //||||||||||||||||||||||||||||||||||||||||| WBOX DATA |||||||||||||||||||||||||||||||||||||||||
+            //||||||||||||||||||||||||||||||||||||||||| WBOX DATA |||||||||||||||||||||||||||||||||||||||||
+            //||||||||||||||||||||||||||||||||||||||||| WBOX DATA |||||||||||||||||||||||||||||||||||||||||
+            ConsoleFunctions.SetConsoleColor(ConsoleColor.Black, ConsoleColor.Cyan);
+            Console.WriteLine("||||||||||| WBOX Data |||||||||||");
+            ConsoleFunctions.SetConsoleColor(ConsoleColor.Black, ConsoleColor.White);
 
-            uint mNameLength = ByteFunctions.ReadUnsignedInt(fileBytes, ref bytePointerPosition);
-            Console.WriteLine("mNameLength: '{0}'", mNameLength);
+            //--------------------------mName Block Size-------------------------- [4 bytes] //mName block size (size + string len)
+            walkBoxes.mName_BlockSize = ByteFunctions.ReadUnsignedInt(fileBytes, ref bytePointerPosition);
+            Console.WriteLine("WBOX mName Block Size = {0}", walkBoxes.mName_BlockSize);
 
-            WalkBoxes walkBoxes = new WalkBoxes()
-            {
-                mName = ByteFunctions.ReadFixedString(fileBytes, mNameLength, ref bytePointerPosition)
-            };
+            //--------------------------mName String Length-------------------------- [4 bytes]
+            walkBoxes.mName_StringLength = ByteFunctions.ReadUnsignedInt(fileBytes, ref bytePointerPosition);
+            Console.WriteLine("WBOX mNameLength: '{0}'", walkBoxes.mName_StringLength);
 
-            Console.WriteLine("mName: '{0}'", walkBoxes.mName);
+            //--------------------------mName-------------------------- [mName_StringLength bytes]
+            walkBoxes.mName = ByteFunctions.ReadFixedString(fileBytes, walkBoxes.mName_StringLength, ref bytePointerPosition);
+            Console.WriteLine("WBOX mName: '{0}'", walkBoxes.mName);
+
+            //---------------------------mTris DCArray Capacity--------------------------
+            uint bytePointerPosition_beforeTris = bytePointerPosition;
+            walkBoxes.mTris_Capacity = ByteFunctions.ReadUnsignedInt(fileBytes, ref bytePointerPosition);
+            Console.WriteLine("WBOX mTris Capacity: '{0}'", walkBoxes.mTris_Capacity);
+
+            //---------------------------mTris DCArray Size--------------------------
+            walkBoxes.mTris_Size = ByteFunctions.ReadInt(fileBytes, ref bytePointerPosition);
+            Console.WriteLine("WBOX mTris Size: '{0}'", walkBoxes.mTris_Size);
 
             //---------------------------mTris--------------------------
-            uint bytePointerPosition_beforeTris = bytePointerPosition;
-            uint mTris_Capacity = ByteFunctions.ReadUnsignedInt(fileBytes, ref bytePointerPosition);
-            Console.WriteLine("mTris Capacity: '{0}'", mTris_Capacity);
-
-            uint mTris_Size = ByteFunctions.ReadUnsignedInt(fileBytes, ref bytePointerPosition);
-            Console.WriteLine("mTris Size: '{0}'", mTris_Size);
-
-            walkBoxes.mTris = new Tri[mTris_Size];
+            walkBoxes.mTris = new Tri[walkBoxes.mTris_Size];
 
             for (int i = 0; i < walkBoxes.mTris.Length; i++)
             {
-                Tri mTri = new Tri()
+                //---------------------------mTri Entry--------------------------  [140 BYTES] (but there are 8 extra bytes)
+                walkBoxes.mTris[i] = new Tri()
                 {
-                    mFootstepMaterial = (EnumMaterial)ByteFunctions.ReadInt(fileBytes, ref bytePointerPosition),
-                    mFlags = new Flags()
+                    mFootstepMaterial_BlockSize = ByteFunctions.ReadUnsignedInt(fileBytes, ref bytePointerPosition), //[4 BYTES] ALWAYS 8
+                    mFootstepMaterial = (EnumMaterial)ByteFunctions.ReadInt(fileBytes, ref bytePointerPosition), // [4 BYTES]
+                    mFlags = ConvertStructs.Get_Flags(fileBytes, ref bytePointerPosition), // [4 BYTES]
+                    mNormal = ByteFunctions.ReadInt(fileBytes, ref bytePointerPosition), // [4 BYTES]
+                    mQuadBuddy = ByteFunctions.ReadInt(fileBytes, ref bytePointerPosition), // [4 BYTES]
+                    mMaxRadius = ByteFunctions.ReadFloat(fileBytes, ref bytePointerPosition), // [4 BYTES]
+                    mVerts_BlockSize = ByteFunctions.ReadUnsignedInt(fileBytes, ref bytePointerPosition), //[4 BYTES] ALWAYS 16
+                    mVerts = new int[3] //SArray<int,3> [12 BYTES]
                     {
-                        mFlags = ByteFunctions.ReadUnsignedInt(fileBytes, ref bytePointerPosition)
+                        ByteFunctions.ReadInt(fileBytes, ref bytePointerPosition), // [4 BYTES]
+                        ByteFunctions.ReadInt(fileBytes, ref bytePointerPosition), // [4 BYTES]
+                        ByteFunctions.ReadInt(fileBytes, ref bytePointerPosition)  // [4 BYTES]
                     },
-                    mNormal = ByteFunctions.ReadLong(fileBytes, ref bytePointerPosition),
-                    mQuadBuddy = ByteFunctions.ReadLong(fileBytes, ref bytePointerPosition),
-                    mMaxRadius = ByteFunctions.ReadFloat(fileBytes, ref bytePointerPosition),
-                    mVerts = new int[3] //SArray<int,3>
+                    mEdgeInfo_BlockSize = ByteFunctions.ReadUnsignedInt(fileBytes, ref bytePointerPosition), //[4 BYTES] ALWAYS 76
+                    mEdgeInfo = new Edge[3] //SArray<WalkBoxes::Edge,3> [72 BYTES]
                     {
-                        ByteFunctions.ReadInt(fileBytes, ref bytePointerPosition),
-                        ByteFunctions.ReadInt(fileBytes, ref bytePointerPosition),
-                        ByteFunctions.ReadInt(fileBytes, ref bytePointerPosition)
+                        ConvertStructs.Get_Edge(fileBytes, ref bytePointerPosition), //[24 BYTES]
+                        ConvertStructs.Get_Edge(fileBytes, ref bytePointerPosition), //[24 BYTES]
+                        ConvertStructs.Get_Edge(fileBytes, ref bytePointerPosition)  //[24 BYTES]
                     },
-                    mEdgeInfo = new Edge[3] //SArray<WalkBoxes::Edge,3>
+                    mVertOffsets_BlockSize = ByteFunctions.ReadUnsignedInt(fileBytes, ref bytePointerPosition), //[4 BYTES] ALWAYS 16
+                    mVertOffsets = new int[3] //SArray<int,3> [12 BYTES]
                     {
-                        GetEdge(fileBytes, ref bytePointerPosition),
-                        GetEdge(fileBytes, ref bytePointerPosition),
-                        GetEdge(fileBytes, ref bytePointerPosition)
+                        ByteFunctions.ReadInt(fileBytes, ref bytePointerPosition), // [4 BYTES]
+                        ByteFunctions.ReadInt(fileBytes, ref bytePointerPosition), // [4 BYTES]
+                        ByteFunctions.ReadInt(fileBytes, ref bytePointerPosition)  // [4 BYTES]
                     },
-                    mVertOffsets = new int[3] //SArray<int,3> 
+                    mVertScales_BlockSize = ByteFunctions.ReadUnsignedInt(fileBytes, ref bytePointerPosition), //[4 BYTES] ALWAYS 16
+                    mVertScales = new float[3] //SArray<float,3> [12 BYTES]
                     {
-                        ByteFunctions.ReadInt(fileBytes, ref bytePointerPosition),
-                        ByteFunctions.ReadInt(fileBytes, ref bytePointerPosition),
-                        ByteFunctions.ReadInt(fileBytes, ref bytePointerPosition)
-                    },
-                    mVertScales = new float[3] //SArray<float,3>
-                    {
-                        ByteFunctions.ReadFloat(fileBytes, ref bytePointerPosition),
-                        ByteFunctions.ReadFloat(fileBytes, ref bytePointerPosition),
-                        ByteFunctions.ReadFloat(fileBytes, ref bytePointerPosition)
+                        ByteFunctions.ReadFloat(fileBytes, ref bytePointerPosition), // [4 BYTES]
+                        ByteFunctions.ReadFloat(fileBytes, ref bytePointerPosition), // [4 BYTES]
+                        ByteFunctions.ReadFloat(fileBytes, ref bytePointerPosition)  // [4 BYTES]
                     }
                 };
-
-                walkBoxes.mTris[i] = mTri;
             }
 
             //not necessary, but to check if we are where we should be at
-            ArrayCheckAdjustment(bytePointerPosition_beforeTris, mTris_Capacity, ref bytePointerPosition);
+            ByteFunctions.DCArrayCheckAdjustment(bytePointerPosition_beforeTris, walkBoxes.mTris_Capacity, ref bytePointerPosition);
+
+            //---------------------------mVerts DCArray Capacity--------------------------
+            uint bytePointerPosition_beforeVerts = bytePointerPosition;
+            walkBoxes.mVerts_Capacity = ByteFunctions.ReadUnsignedInt(fileBytes, ref bytePointerPosition);
+            Console.WriteLine("WBOX mVerts Capacity: '{0}'", walkBoxes.mVerts_Capacity);
+
+            //---------------------------mVerts DCArray Size--------------------------
+            walkBoxes.mVerts_Size = ByteFunctions.ReadInt(fileBytes, ref bytePointerPosition);
+            Console.WriteLine("WBOX mVerts Size: '{0}'", walkBoxes.mVerts_Size);
 
             //---------------------------mVerts--------------------------
-            uint bytePointerPosition_beforeVerts = bytePointerPosition;
-            uint mVerts_Capacity = ByteFunctions.ReadUnsignedInt(fileBytes, ref bytePointerPosition);
-            Console.WriteLine("mVerts Capacity: '{0}'", mVerts_Capacity);
-
-            uint mVerts_Size = ByteFunctions.ReadUnsignedInt(fileBytes, ref bytePointerPosition);
-            Console.WriteLine("mVerts Size: '{0}'", mVerts_Size);
-
-            walkBoxes.mVerts = new Vert[mVerts_Size];
+            walkBoxes.mVerts = new Vert[walkBoxes.mVerts_Size];
 
             for (int i = 0; i < walkBoxes.mVerts.Length; i++)
             {
-                Vert vertex = new Vert()
+                //---------------------------mVert Entry--------------------------
+                walkBoxes.mVerts[i] = new Vert()
                 {
-                    mFlags = new Flags()
-                    {
-                        mFlags = ByteFunctions.ReadUnsignedInt(fileBytes, ref bytePointerPosition)
-                    },
-                    mPos = GetVector3(fileBytes, ref bytePointerPosition)
+                    mFlags = ConvertStructs.Get_Flags(fileBytes, ref bytePointerPosition),
+                    mPos = ConvertStructs.Get_Vector3(fileBytes, ref bytePointerPosition)
                 };
-
-                walkBoxes.mVerts[i] = vertex;
             }
 
             //not necessary, but to check if we are where we should be at
-            ArrayCheckAdjustment(bytePointerPosition_beforeVerts, mVerts_Capacity, ref bytePointerPosition);
+            ByteFunctions.DCArrayCheckAdjustment(bytePointerPosition_beforeVerts, walkBoxes.mVerts_Capacity, ref bytePointerPosition);
+
+            //---------------------------mNormals DCArray Capacity--------------------------
+            uint bytePointerPosition_beforeNormals = bytePointerPosition;
+            walkBoxes.mNormals_Capacity = ByteFunctions.ReadUnsignedInt(fileBytes, ref bytePointerPosition);
+            Console.WriteLine("WBOX mNormals Capacity: '{0}'", walkBoxes.mNormals_Capacity);
+
+            //---------------------------mNormals DCArray Size--------------------------
+            walkBoxes.mNormals_Size = ByteFunctions.ReadInt(fileBytes, ref bytePointerPosition);
+            Console.WriteLine("WBOX mNormals Size: '{0}'", walkBoxes.mNormals_Size);
 
             //---------------------------mNormals--------------------------
-            uint bytePointerPosition_beforeNormals = bytePointerPosition;
-            uint mNormals_Capacity = ByteFunctions.ReadUnsignedInt(fileBytes, ref bytePointerPosition);
-            Console.WriteLine("mNormals Capacity: '{0}'", mNormals_Capacity);
-
-            uint mNormals_Size = ByteFunctions.ReadUnsignedInt(fileBytes, ref bytePointerPosition);
-            Console.WriteLine("mNormals Size: '{0}'", mNormals_Size);
-
-            walkBoxes.mNormals = new Vector3[mNormals_Size];
+            walkBoxes.mNormals = new Vector3[walkBoxes.mNormals_Size];
 
             for (int i = 0; i < walkBoxes.mNormals.Length; i++)
             {
-                walkBoxes.mNormals[i] = GetVector3(fileBytes, ref bytePointerPosition);
+                walkBoxes.mNormals[i] = ConvertStructs.Get_Vector3(fileBytes, ref bytePointerPosition);
             }
 
             //not necessary, but to check if we are where we should be at
-            ArrayCheckAdjustment(bytePointerPosition_beforeNormals, mNormals_Capacity, ref bytePointerPosition);
+            ByteFunctions.DCArrayCheckAdjustment(bytePointerPosition_beforeNormals, walkBoxes.mNormals_Capacity, ref bytePointerPosition);
+
+            //---------------------------mQuads DCArray Capacity--------------------------
+            uint bytePointerPosition_beforeQuads = bytePointerPosition;
+            walkBoxes.mQuads_Capacity = ByteFunctions.ReadUnsignedInt(fileBytes, ref bytePointerPosition);
+            Console.WriteLine("WBOX mQuads Capacity: '{0}'", walkBoxes.mQuads_Capacity);
+
+            //---------------------------mQuads DCArray Size--------------------------
+            walkBoxes.mQuads_Size = ByteFunctions.ReadInt(fileBytes, ref bytePointerPosition);
+            Console.WriteLine("WBOX mQuads Size: '{0}'", walkBoxes.mQuads_Size);
 
             //---------------------------mQuads--------------------------
-            uint bytePointerPosition_beforeQuads = bytePointerPosition;
-            uint mQuads_Capacity = ByteFunctions.ReadUnsignedInt(fileBytes, ref bytePointerPosition);
-            Console.WriteLine("mQuads Capacity: '{0}'", mQuads_Capacity);
-
-            uint mQuads_Size = ByteFunctions.ReadUnsignedInt(fileBytes, ref bytePointerPosition);
-            Console.WriteLine("mQuads Size: '{0}'", mQuads_Size);
-
-            walkBoxes.mQuads = new Quad[mQuads_Size];
+            walkBoxes.mQuads = new Quad[walkBoxes.mQuads_Size];
 
             for (int i = 0; i < walkBoxes.mQuads.Length; i++)
             {
-                Quad quad = new Quad()
+                walkBoxes.mQuads[i] = new Quad()
                 {
                     mVerts = new int[4]
                     {
@@ -190,85 +210,14 @@ namespace wbox_console
                         ByteFunctions.ReadInt(fileBytes, ref bytePointerPosition)
                     }
                 };
-
-                walkBoxes.mQuads[i] = quad;
             }
 
             //not necessary, but to check if we are where we should be at
-            ArrayCheckAdjustment(bytePointerPosition_beforeQuads, mQuads_Capacity, ref bytePointerPosition);
+            ByteFunctions.DCArrayCheckAdjustment(bytePointerPosition_beforeQuads, walkBoxes.mQuads_Capacity, ref bytePointerPosition);
 
-            ReachedEndOfFile(bytePointerPosition, (uint)fileBytes.Length);
+            ByteFunctions.ReachedEndOfFile(bytePointerPosition, (uint)fileBytes.Length);
 
             return walkBoxes;
-        }
-
-        public static Vector3 GetVector3(byte[] fileBytes, ref uint bytePointerPosition)
-        {
-            return new Vector3()
-            {
-                x = ByteFunctions.ReadFloat(fileBytes, ref bytePointerPosition),
-                y = ByteFunctions.ReadFloat(fileBytes, ref bytePointerPosition),
-                z = ByteFunctions.ReadFloat(fileBytes, ref bytePointerPosition)
-            };
-        }
-
-        public static Edge GetEdge(byte[] fileBytes, ref uint bytePointerPosition)
-        {
-            return new Edge()
-            {
-                mFlags = new Flags()
-                {
-                    mFlags = ByteFunctions.ReadUnsignedInt(fileBytes, ref bytePointerPosition)
-                },
-                mV1 = ByteFunctions.ReadInt(fileBytes, ref bytePointerPosition),
-                mV2 = ByteFunctions.ReadInt(fileBytes, ref bytePointerPosition),
-                mEdgeDest = ByteFunctions.ReadInt(fileBytes, ref bytePointerPosition),
-                mEdgeDestEdge = ByteFunctions.ReadInt(fileBytes, ref bytePointerPosition),
-                mEdgeDir = ByteFunctions.ReadInt(fileBytes, ref bytePointerPosition),
-                mMaxRadius = ByteFunctions.ReadFloat(fileBytes, ref bytePointerPosition)
-            };
-        }
-
-        public static void ArrayCheckAdjustment(uint pointerPositionBeforeCapacity, uint arrayCapacity, ref uint bytePointerPosition)
-        {
-            uint estimatedOffPoint = pointerPositionBeforeCapacity + ((uint)arrayCapacity);
-            ConsoleFunctions.SetConsoleColor(ConsoleColor.Black, ConsoleColor.Yellow);
-            Console.WriteLine("(Array Check) Estimated to be at = {0}", estimatedOffPoint);
-
-            if (bytePointerPosition != estimatedOffPoint)
-            {
-                ConsoleFunctions.SetConsoleColor(ConsoleColor.Black, ConsoleColor.Red);
-                Console.WriteLine("(Array Check) Left off at = {0}", bytePointerPosition);
-                Console.WriteLine("(Array Check) Skipping by using the estimated position...", bytePointerPosition);
-                bytePointerPosition = estimatedOffPoint;
-            }
-            else
-            {
-                ConsoleFunctions.SetConsoleColor(ConsoleColor.Black, ConsoleColor.Green);
-                Console.WriteLine("(Array Check) Left off at = {0}", bytePointerPosition);
-            }
-
-            ConsoleFunctions.SetConsoleColor(ConsoleColor.Black, ConsoleColor.White);
-        }
-
-        public static void ReachedEndOfFile(uint bytePointerPosition, uint fileSize)
-        {
-            if (bytePointerPosition != fileSize)
-            {
-                ConsoleFunctions.SetConsoleColor(ConsoleColor.Black, ConsoleColor.Red);
-                Console.WriteLine("Didn't reach the end of the file!");
-                Console.WriteLine("Left off at = {0}", bytePointerPosition);
-                Console.WriteLine("File Size = {0}", fileSize);
-            }
-            else
-            {
-                ConsoleFunctions.SetConsoleColor(ConsoleColor.Black, ConsoleColor.Green);
-                Console.WriteLine("Reached end of file!");
-                Console.WriteLine("Left off at = {0}", bytePointerPosition);
-                Console.WriteLine("File Size = {0}", fileSize);
-            }
-
-            ConsoleFunctions.SetConsoleColor(ConsoleColor.Black, ConsoleColor.White);
         }
     }
 }

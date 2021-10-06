@@ -14,23 +14,17 @@ MetaClassDescription *__fastcall WalkBoxes::Tri::InternalGetMetaClassDescription
   v2 = `MetaClassDescription_Typed<SoundFootsteps::EnumMaterial>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mFlags;
   if ( !_bittest(&v2, 0x1Du) )
   {
-    for ( i = 0;
-          _InterlockedExchange(
-            &`MetaClassDescription_Typed<SoundFootsteps::EnumMaterial>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mLock,
-            1) == 1;
-          ++i )
+    for (i = 0; _InterlockedExchange(&`MetaClassDescription_Typed<SoundFootsteps::EnumMaterial>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mLock, 1) == 1; ++i)
     {
       if ( i > 1000 )
         Thread_Sleep(1);
     }
     if ( !(`MetaClassDescription_Typed<SoundFootsteps::EnumMaterial>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mFlags & 0x20000000) )
-    {
-      MetaClassDescription::Initialize(
-        &`MetaClassDescription_Typed<SoundFootsteps::EnumMaterial>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory,
-        &SoundFootsteps::EnumMaterial `RTTI Type Descriptor');
-      `MetaClassDescription_Typed<SoundFootsteps::EnumMaterial>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mClassSize = 4;
-      SoundFootsteps::EnumMaterial::InternalGetMetaClassDescription(&`MetaClassDescription_Typed<SoundFootsteps::EnumMaterial>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory);
-      MetaClassDescription::Insert(&`MetaClassDescription_Typed<SoundFootsteps::EnumMaterial>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory);
+    { 
+		MetaClassDescription::Initialize(&`MetaClassDescription_Typed<SoundFootsteps::EnumMaterial>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory, &SoundFootsteps::EnumMaterial `RTTI Type Descriptor');
+		`MetaClassDescription_Typed<SoundFootsteps::EnumMaterial>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mClassSize = 4;
+		SoundFootsteps::EnumMaterial::InternalGetMetaClassDescription(&`MetaClassDescription_Typed<SoundFootsteps::EnumMaterial>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory);
+		MetaClassDescription::Insert(&`MetaClassDescription_Typed<SoundFootsteps::EnumMaterial>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory);
     }
     `MetaClassDescription_Typed<SoundFootsteps::EnumMaterial>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mLock.mValue = 0;
   }
@@ -67,32 +61,22 @@ MetaClassDescription *__fastcall WalkBoxes::Tri::InternalGetMetaClassDescription
   qword_140FBB320 = v1;
   if ( !_bittest(&v4, 0x1Du) )
   {
-    for ( j = 0;
-          _InterlockedExchange(
-            &`MetaClassDescription_Typed<SArray<WalkBoxes::Edge,3>>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mLock,
-            1) == 1;
-          ++j )
+    for (j = 0; _InterlockedExchange(&`MetaClassDescription_Typed<SArray<WalkBoxes::Edge,3>>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mLock, 1) == 1; ++j)
     {
       if ( j > 1000 )
         Thread_Sleep(1);
     }
     if ( !(`MetaClassDescription_Typed<SArray<WalkBoxes::Edge,3>>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mFlags & 0x20000000) )
     {
-      MetaClassDescription::Initialize(
-        &`MetaClassDescription_Typed<SArray<WalkBoxes::Edge,3>>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory,
-        &SArray<WalkBoxes::Edge,3> `RTTI Type Descriptor');
+      MetaClassDescription::Initialize(&`MetaClassDescription_Typed<SArray<WalkBoxes::Edge,3>>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory, &SArray<WalkBoxes::Edge,3> `RTTI Type Descriptor');
       `MetaClassDescription_Typed<SArray<WalkBoxes::Edge,3>>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mClassSize = 84;
       `MetaClassDescription_Typed<SArray<WalkBoxes::Edge,3>>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mpVTable = `MetaClassDescription_Typed<SArray<WalkBoxes::Edge,3>>::GetVTable'::`2'::sVTable;
       `SArray<WalkBoxes::Edge,3>::InternalGetMetaClassDescription'::`4'::operation_obj.id = 74;
       `SArray<WalkBoxes::Edge,3>::InternalGetMetaClassDescription'::`4'::operation_obj.mpOpFn = SArray<WalkBoxes::Edge,3>::MetaOperation_SerializeAsync;
-      MetaClassDescription::InstallSpecializedMetaOperation(
-        &`MetaClassDescription_Typed<SArray<WalkBoxes::Edge,3>>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory,
-        &`SArray<WalkBoxes::Edge,3>::InternalGetMetaClassDescription'::`4'::operation_obj);
+      MetaClassDescription::InstallSpecializedMetaOperation(&`MetaClassDescription_Typed<SArray<WalkBoxes::Edge,3>>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory, &`SArray<WalkBoxes::Edge,3>::InternalGetMetaClassDescription'::`4'::operation_obj);
       `SArray<WalkBoxes::Edge,3>::InternalGetMetaClassDescription'::`5'::operation_obj.id = 75;
       `SArray<WalkBoxes::Edge,3>::InternalGetMetaClassDescription'::`5'::operation_obj.mpOpFn = SArray<WalkBoxes::Edge,3>::MetaOperation_SerializeMain;
-      MetaClassDescription::InstallSpecializedMetaOperation(
-        &`MetaClassDescription_Typed<SArray<WalkBoxes::Edge,3>>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory,
-        &`SArray<WalkBoxes::Edge,3>::InternalGetMetaClassDescription'::`5'::operation_obj);
+      MetaClassDescription::InstallSpecializedMetaOperation(&`MetaClassDescription_Typed<SArray<WalkBoxes::Edge,3>>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory, &`SArray<WalkBoxes::Edge,3>::InternalGetMetaClassDescription'::`5'::operation_obj);
       MetaClassDescription::Insert(&`MetaClassDescription_Typed<SArray<WalkBoxes::Edge,3>>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory);
     }
     `MetaClassDescription_Typed<SArray<WalkBoxes::Edge,3>>::GetMetaClassDescription'::`2'::metaClassDescriptionMemory.mLock.mValue = 0;
