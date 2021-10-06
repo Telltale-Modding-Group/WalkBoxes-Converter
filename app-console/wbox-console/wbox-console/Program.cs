@@ -3,7 +3,7 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using wbox_console.Utilities;
-using wbox_console.Telltale;
+using wbox_console.WBOX;
 using Newtonsoft.Json;
 
 namespace wbox_console
@@ -11,7 +11,9 @@ namespace wbox_console
     class Program
     {
         private static string wboxExt = ".wbox";
-        private static string directory = "C:/Users/David Matos/Desktop/Desktop2022/telltale-wbox/de-wboxes";
+        //private static string directory = "C:/Users/David Matos/Desktop/Desktop2022/telltale-wbox/de-wboxes";C:\Users\David Matos\Desktop\Desktop2022\telltale-wbox\all-wbox-files
+        //private static string directory = "C:/Users/David Matos/Desktop/Desktop2022/telltale-wbox/all-wbox-files";
+        private static string directory = "C:/Users/David Matos/Desktop/Desktop2022/telltale-wbox/wd1-wboxes";
 
         private static void Main(string[] args)
         {
@@ -66,7 +68,7 @@ namespace wbox_console
         public static void ReadWalkBox(string filePath)
         {
             WalkBoxes_File walkBoxes = new WalkBoxes_File();
-            walkBoxes.WalkBoxes = WalkBoxes_File.Read_WalkBox_FromTelltale(filePath);
+            walkBoxes.Read_WalkBox_FromTelltale(filePath);
 
             bool writeJSON = true;
 
@@ -86,7 +88,7 @@ namespace wbox_console
 
                     //seralize the data and write it to the configruation file
                     serializer.Formatting = Formatting.Indented;
-                    serializer.Serialize(file, walkBoxes);
+                    serializer.Serialize(file, walkBoxes.Get_WBOX_Object());
                 }
             }
         }
