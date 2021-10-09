@@ -6,24 +6,24 @@ This is an application designed for reading and converting **.wbox files (WalkBo
 
 ## DISCLAIMER (Please Read)
 Supports the following *(haven't tested all of them)*
-- Jurassic Park: The Game (ERTM)
-- Law & Order: Legacies (ERTM)
-- The Walking Dead (ERTM)
-- Poker Night 2 (ERTM)
-- The Wolf Among Us (5VSM)
-- The Walking Dead: Season Two (5VSM)
-- Tales from the Borderlands (5VSM)
-- Game of Thrones (5VSM)
-- Minecraft: Story Mode (5VSM)
-- The Walking Dead: Michonne (5VSM)
-- Batman: The Telltale Series (6VSM)
-- The Walking Dead: A New Frontier (6VSM)
-- Guardians of the Galaxy: The Telltale Series (6VSM)
-- Minecraft: Story Mode – Season Two (6VSM)
-- Batman: The Enemy Within (6VSM)
-- The Walking Dead Collection? (not sure) (6VSM)
-- The Walking Dead: The Final Season (6VSM)
-- The Walking Dead: The Telltale Definitive Series (6VSM)
+- Jurassic Park: The Game *(ERTM)*
+- Law & Order: Legacies *(ERTM)*
+- The Walking Dead *(ERTM)*
+- Poker Night 2 *(ERTM)*
+- The Wolf Among Us *(5VSM)*
+- The Walking Dead: Season Two *(5VSM)*
+- Tales from the Borderlands *(5VSM)*
+- Game of Thrones *(5VSM)*
+- Minecraft: Story Mode *(5VSM)*
+- The Walking Dead: Michonne *(5VSM)*
+- Batman: The Telltale Series *(6VSM)*
+- The Walking Dead: A New Frontier *(6VSM)*
+- Guardians of the Galaxy: The Telltale Series *(6VSM)*
+- Minecraft: Story Mode – Season Two *(6VSM)*
+- Batman: The Enemy Within *(6VSM)*
+- The Walking Dead Collection? (not sure) *(6VSM)*
+- The Walking Dead: The Final Season *(6VSM)*
+- The Walking Dead: The Telltale Definitive Series *(6VSM)*
 
 This is a console app, and it spits out a .json file with all of the serialized data in the telltale .wbox file. 
 
