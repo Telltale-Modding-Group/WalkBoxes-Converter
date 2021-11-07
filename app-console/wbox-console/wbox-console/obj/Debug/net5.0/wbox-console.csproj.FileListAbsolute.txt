@@ -29,7 +29,6 @@ C:\Users\David Matos\Desktop\Desktop2022\telltale-wbox\app-console\wbox-console\
 C:\Users\David Matos\Desktop\Desktop2022\telltale-wbox\app-console\wbox-console\wbox-console\obj\Debug\net5.0\wbox-console.AssemblyInfoInputs.cache
 C:\Users\David Matos\Desktop\Desktop2022\telltale-wbox\app-console\wbox-console\wbox-console\obj\Debug\net5.0\wbox-console.AssemblyInfo.cs
 C:\Users\David Matos\Desktop\Desktop2022\telltale-wbox\app-console\wbox-console\wbox-console\obj\Debug\net5.0\wbox-console.csproj.CoreCompileInputs.cache
-C:\Users\David Matos\Desktop\Desktop2022\telltale-wbox\app-console\wbox-console\wbox-console\obj\Debug\net5.0\wbox-console.csproj.CopyComplete
 C:\Users\David Matos\Desktop\Desktop2022\telltale-wbox\app-console\wbox-console\wbox-console\obj\Debug\net5.0\wbox-console.dll
 C:\Users\David Matos\Desktop\Desktop2022\telltale-wbox\app-console\wbox-console\wbox-console\obj\Debug\net5.0\ref\wbox-console.dll
 C:\Users\David Matos\Desktop\Desktop2022\telltale-wbox\app-console\wbox-console\wbox-console\obj\Debug\net5.0\wbox-console.pdb

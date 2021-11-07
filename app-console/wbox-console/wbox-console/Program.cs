@@ -3,7 +3,7 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using wbox_console.Utilities;
-using wbox_console.WBOX;
+using wbox_console.Main;
 using Newtonsoft.Json;
 
 namespace wbox_console
@@ -11,9 +11,10 @@ namespace wbox_console
     class Program
     {
         private static string wboxExt = ".wbox";
-        //private static string directory = "C:/Users/David Matos/Desktop/Desktop2022/telltale-wbox/de-wboxes";C:\Users\David Matos\Desktop\Desktop2022\telltale-wbox\all-wbox-files
-        //private static string directory = "C:/Users/David Matos/Desktop/Desktop2022/telltale-wbox/all-wbox-files";
-        private static string directory = "C:/Users/David Matos/Desktop/Desktop2022/telltale-wbox/wd1-wboxes";
+        //private static string directory = "C:/Users/David Matos/Desktop/Desktop2022/telltale-wbox/de-wboxes";
+        private static string directory = "C:/Users/David Matos/Desktop/Desktop2022/telltale-wbox/all-wbox-files";
+        //private static string directory = "C:/Users/David Matos/Desktop/Desktop2022/telltale-wbox/wd1-wboxes";
+        private static bool writeJSON = true;
 
         private static void Main(string[] args)
         {
@@ -23,7 +24,7 @@ namespace wbox_console
         private static void GetFilesInDirectory()
         {
             //gather the files from the folder path into an array
-            List<string> files = new List<string>(Directory.GetFiles(directory));
+            List<string> files = new(Directory.GetFiles(directory));
 
             ConsoleFunctions.SetConsoleColor(ConsoleColor.Black, ConsoleColor.Yellow);
             Console.WriteLine("Filtering Files..."); //notify the user we are filtering the array
@@ -67,33 +68,13 @@ namespace wbox_console
 
         public static void ReadWalkBox(string filePath)
         {
-            WalkBoxes_File walkBoxes = new WalkBoxes_File();
-            walkBoxes.Read_WalkBox_FromTelltale(filePath);
+            WalkBoxes_Master walkBoxes = new(filePath);
 
-            bool writeJSON = true;
-
-            if(writeJSON)
-            {
-                string fileExt = Path.GetExtension(filePath);
-                string jsonPath = filePath.Remove(filePath.Length - fileExt.Length, fileExt.Length) + ".json";
-
-                if (File.Exists(jsonPath))
-                    File.Delete(jsonPath);
-
-                //open a stream writer to create the text file and write to it
-                using (StreamWriter file = File.CreateText(jsonPath))
-                {
-                    //get our json seralizer
-                    JsonSerializer serializer = new JsonSerializer();
-
-                    //seralize the data and write it to the configruation file
-                    serializer.Formatting = Formatting.Indented;
-                    serializer.Serialize(file, walkBoxes.Get_WBOX_Object());
-                }
-            }
+            if (writeJSON)
+                WriteJSON(filePath, walkBoxes);
         }
 
-        public static void WriteJSON(string originalFilePath, WalkBoxes_File walkBoxes)
+        public static void WriteJSON(string originalFilePath, WalkBoxes_Master walkBoxes)
         {
             string fileExt = Path.GetExtension(originalFilePath);
             string jsonPath = originalFilePath.Remove(originalFilePath.Length - fileExt.Length, fileExt.Length) + ".json";
@@ -105,11 +86,15 @@ namespace wbox_console
             using (StreamWriter file = File.CreateText(jsonPath))
             {
                 //get our json seralizer
-                JsonSerializer serializer = new JsonSerializer();
+                JsonSerializer serializer = new();
+
+                List<object> serializedObjects = new();
+                serializedObjects.Add(walkBoxes.Get_Meta_Object());
+                serializedObjects.Add(walkBoxes.walkboxes);
 
                 //seralize the data and write it to the configruation file
                 serializer.Formatting = Formatting.Indented;
-                serializer.Serialize(file, walkBoxes);
+                serializer.Serialize(file, serializedObjects);
             }
         }
     }
